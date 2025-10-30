@@ -39,7 +39,7 @@ func (w *workflowInboundInterceptor) ExecuteWorkflow(
 
 	defer func() {
 		if x := recover(); x != nil {
-			hub := sentry.CurrentHub().Clone()
+			hub := w.root.hub.Clone()
 			hub.ConfigureScope(configureScope)
 			hub.ConfigureScope(func(scope *sentry.Scope) {
 				scope.SetLevel(sentry.LevelFatal)
@@ -63,7 +63,7 @@ func (w *workflowInboundInterceptor) ExecuteWorkflow(
 			return
 		}
 
-		hub := sentry.CurrentHub().Clone()
+		hub := w.root.hub.Clone()
 		hub.ConfigureScope(configureScope)
 		_ = hub.CaptureException(err)
 	}
